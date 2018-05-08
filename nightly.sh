@@ -17,6 +17,8 @@
 # limitations under the License.
 ################################################################################
 
+echo "START"
+
 HERE="`dirname \"$0\"`"				# relative
 HERE="`( cd \"${HERE}\" && pwd )`" 	# absolutized and normalized
 if [ -z "${HERE}" ] ; then
@@ -36,9 +38,13 @@ MVN_LOGGING_OPTIONS="-Dlog.dir=${ARTIFACTS_DIR} -Dlog4j.configuration=file://$LO
 MVN_COMPILE_OPTIONS="-nsu -B -Dflink.forkCount=2 -Dflink.forkCountTestPackage=2 -Dmaven.javadoc.skip=true -DskipTests -Dcheckstyle.skip=true -Djapicmp.skip=true -Drat.skip=true"
 MVN_COMPILE="mvn ${MVN_COMPILE_OPTIONS} ${MVN_LOGGING_OPTIONS} ${PROFILE} clean install"
 
-git clone https://github.com/apache/flink
+rm -rf flink
+git clone https://github.com/azagrebin/flink
 
 cd "${FLINK_DIR}"
+
+git checkout FLINK-9301
+
 
 eval "${MVN_COMPILE}"
 EXIT_CODE=$?
